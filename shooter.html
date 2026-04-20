@@ -142,7 +142,6 @@ class Hero {
     const blink = this.invincible > 0 && Math.floor(this.invincible * 8) % 2 === 0;
     if (blink) return;
 
-    // health ring
     const ringFraction = this.health / 3;
     ctx.beginPath();
     ctx.arc(this.x, this.y, HERO_RADIUS + 4, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ringFraction);
@@ -150,13 +149,11 @@ class Hero {
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // body
     ctx.beginPath();
     ctx.arc(this.x, this.y, HERO_RADIUS, 0, Math.PI * 2);
     ctx.fillStyle = '#ffffff';
     ctx.fill();
 
-    // direction indicator
     const angle = Math.atan2(this.facingDy, this.facingDx);
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -229,7 +226,6 @@ class EnemyTank extends Enemy {
     const s = this.radius * 2;
     ctx.fillStyle = this.hitFlash > 0 ? '#ffe066' : this.color;
     ctx.fillRect(this.x - this.radius, this.y - this.radius, s, s);
-    // health pips
     for (let i = 0; i < this.maxHealth; i++) {
       ctx.fillStyle = i < this.health ? '#fff' : '#555';
       ctx.fillRect(this.x - 12 + i * 10, this.y - this.radius - 8, 8, 4);
@@ -298,7 +294,6 @@ class Bullet {
   }
   draw() {
     const angle = Math.atan2(this.dy, this.dx);
-    // trail
     this.trail.forEach((p, i) => {
       ctx.save();
       ctx.globalAlpha = (i + 1) / this.trail.length * 0.5;
@@ -308,7 +303,6 @@ class Bullet {
       ctx.fillRect(-3, -1.5, 6, 3);
       ctx.restore();
     });
-    // bullet
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(angle);
@@ -548,7 +542,6 @@ function update(dt) {
 
   hero.update(dt);
 
-  // wave escalation
   waveTimer += dt;
   if (waveTimer >= WAVE_INTERVAL) {
     waveTimer -= WAVE_INTERVAL;
@@ -558,7 +551,6 @@ function update(dt) {
     currentMaxEnemies = Math.min(currentMaxEnemies + 2, 50);
   }
 
-  // spawning
   spawnTimer += dt * 1000;
   if (spawnTimer >= currentSpawnMs) {
     spawnTimer -= currentSpawnMs;
